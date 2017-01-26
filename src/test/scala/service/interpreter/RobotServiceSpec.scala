@@ -146,4 +146,19 @@ class RobotServiceSpec extends FunSpec with Matchers {
     }
   }
 
+  describe("report") {
+    it("should be ignored by off table robot") {
+      val output = report(OffTableRobot)
+      output.isRight shouldBe true
+      output.right.get shouldBe OffTableRobot
+    }
+
+    it("should return position and direction") {
+      val robot = OnTableRobot(OnTable(Position(2, 3)), West)
+      val output = report(robot)
+      output.isLeft shouldBe true
+      output.left.get shouldBe "2,3,WEST"
+    }
+  }
+
 }

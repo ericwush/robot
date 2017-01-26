@@ -18,9 +18,9 @@ class CommandServiceInterpreter extends CommandService[Command, Direction, Posit
       case "WEST" => Some(West)
       case "NORTH" => Some(North)
       case _ => None
-  }
+    }
 
-  def parseCommand(commandLine: String): Try[Command] = {
+  def parseCommand(commandLine: String): Either[String, Command] = {
     Try({
       val command = commandLine.trim.split(" ")
       command(0) match {
@@ -31,7 +31,10 @@ class CommandServiceInterpreter extends CommandService[Command, Direction, Posit
         case "REPORT" => checkNonArguments(command, Report)
         case _ => throw new IllegalArgumentException("Invalid command")
       }
-    })
+    }).toEither match {
+      case scala.util.Left(e) => scala.util.Left(e.getMessage)
+      case scala.util.Right(command) => scala.util.Right(command)
+    }
   }
 
   private def checkNonArguments(commandString: Array[String], command: Command): Command = {
@@ -57,24 +60,37 @@ class CommandServiceInterpreter extends CommandService[Command, Direction, Posit
     }
   }
 
-  def executeCommand(maybeRobot: Option[Robot], command: Command): Table => Try[Robot] =
+  def executeCommand(maybeRobot: Option[Robot], command: Command): Table => Either[String, Robot] = {
     table => {
       command match {
-        case Place(position, direction) => Success(place(table, position, direction))
+        case Place(position, direction) => scala.util.Right(place(table, position, direction))
         case Move => action(maybeRobot, move(table))
         case Left => action(maybeRobot, left)
         case Right => action(maybeRobot, right)
+        case Report => reportRobot(maybeRobot)
       }
     }
+  }
 
-  private def action(maybeRobot: Option[Robot], action: Robot => Robot): Try[Robot] = {
+  private def action(maybeRobot: Option[Robot], action: Robot => Robot): Either[String, Robot] = {
     Try({
       maybeRobot match {
         case Some(robot) => action(robot)
         case None => throw new IllegalStateException("Command discarded, must first place the robot")
       }
-    })
+    }).toEither match {
+      case scala.util.Left(e) => scala.util.Left(e.getMessage)
+      case scala.util.Right(robot) => scala.util.Right(robot)
+    }
   }
+
+  private def reportRobot(maybeRobot: Option[Robot]): Either[String, Robot] = {
+    maybeRobot match {
+      case Some(robot) => report(robot)
+      case None => scala.util.Left("Command discarded, must first place the robot")
+    }
+  }
+
 }
 
 object CommandService extends CommandServiceInterpreter

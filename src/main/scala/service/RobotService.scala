@@ -10,6 +10,6 @@ trait RobotService[Table, Position, Direction, Robot] {
 
   def right(robot: Robot): Robot
 
-  def report(robot: Robot): (Position, Direction)
+  def report(robot: Robot): Either[String, Robot]
 
 }

@@ -71,7 +71,13 @@ class RobotServiceInterpreter extends RobotService[Table, Position, Direction, R
     }
   }
 
-  def report(robot: Robot): (Position, Direction) = ???
+  def report(robot: Robot): Either[String, Robot] = {
+    robot match {
+      case OnTableRobot(onTable, direction) => scala.util.Left(
+        s"${onTable.position.x},${onTable.position.y},${direction.toString.toUpperCase}")
+      case _ => scala.util.Right(OffTableRobot)
+    }
+  }
 
 }
 
