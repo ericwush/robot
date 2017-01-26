@@ -12,7 +12,7 @@ class RobotServiceInterpreter extends RobotService[Table, Position, Direction, R
     }
   }
 
-  def move(table: Table, robot: Robot): Robot = {
+  def move(table: Table)(robot: Robot): Robot = {
     def next(tablePosition: OnTable, direction: Direction) = {
       val position = tablePosition.position
 

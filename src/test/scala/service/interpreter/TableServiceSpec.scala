@@ -4,6 +4,7 @@ import model.{OffTable, OnTable, Position}
 import org.scalacheck.Gen
 import org.scalatest.prop.PropertyChecks
 import org.scalatest.{FunSpec, Matchers}
+import service.interpreter.TableService.position
 
 class TableServiceSpec extends FunSpec with Matchers with PropertyChecks {
 
@@ -16,7 +17,7 @@ class TableServiceSpec extends FunSpec with Matchers with PropertyChecks {
       val table = model.Table(tableX, tableY)
 
       forAll(onTableX, onTableY) { (x: Int, y: Int) =>
-        TableService.position(table, Position(x, y)) shouldBe OnTable(Position(x, y))
+        position(table, Position(x, y)) shouldBe OnTable(Position(x, y))
       }
     }
 
@@ -28,7 +29,7 @@ class TableServiceSpec extends FunSpec with Matchers with PropertyChecks {
       val table = model.Table(tableX, tableY)
 
       forAll(offTableX, offTableY) { (x: Int, y: Int) =>
-        TableService.position(table, Position(x, y)) shouldBe OffTable
+        position(table, Position(x, y)) shouldBe OffTable
       }
     }
   }
