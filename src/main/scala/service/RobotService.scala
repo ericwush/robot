@@ -1,10 +1,10 @@
 package service
 
-trait RobotService[Position, Direction, Robot] {
+trait RobotService[Table, Position, Direction, Robot] {
 
-  def place(position: Position, direction: Direction): Robot
+  def place(table: Table, position: Position, direction: Direction): Robot
 
-  def move(robot: Robot): Robot
+  def move(table: Table, robot: Robot): Robot
 
   def left(robot: Robot): Robot
 
