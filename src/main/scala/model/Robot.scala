@@ -9,7 +9,7 @@ case object West extends Direction
 case class Position(x: Int, y: Int)
 
 sealed trait Command
-case object Place extends Command
+case class Place(position: Position, direction: Direction) extends Command
 case object Move extends Command
 case object Left extends Command
 case object Right extends Command
