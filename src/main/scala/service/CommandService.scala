@@ -1,7 +1,5 @@
 package service
 
-import scala.util.Try
-
 trait CommandService[Command, Direction, Position, Table, Robot] {
 
   def parsePosition(x: String, y: String): Option[Position]

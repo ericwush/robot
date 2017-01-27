@@ -4,7 +4,7 @@ package interpreter
 import model._
 import service.interpreter.RobotService._
 
-import scala.util.{Success, Try}
+import scala.util.Try
 
 class CommandServiceInterpreter extends CommandService[Command, Direction, Position, Table, Robot] {
 
