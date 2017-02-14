@@ -61,7 +61,6 @@ class CommandServiceInterpreter extends CommandService[Command, Direction, Posit
   }
 
   def executeCommand(maybeRobot: Option[Robot], command: Command)(implicit table: Table): Either[String, Robot] = {
-
       command match {
         case Place(position, direction) => scala.util.Right(place(table, position, direction))
         case Move => action(maybeRobot, move(table))

@@ -8,6 +8,10 @@ import scala.collection.immutable.Range.Inclusive
 
 class CommandServiceSpec extends FunSpec with Matchers {
 
+  val tableX: Inclusive = 0 to 4
+  val tableY: Inclusive = 0 to 4
+  implicit val table = model.Table(tableX, tableY)
+
   describe("parse direction") {
     it("should return East") {
       parseDirection("EAST").get shouldBe East
@@ -83,67 +87,71 @@ class CommandServiceSpec extends FunSpec with Matchers {
   }
 
   describe("execute command") {
-    val tableX: Inclusive = 0 to 4
-    val tableY: Inclusive = 0 to 4
-    val table = model.Table(tableX, tableY)
-
     it("should execute PLACE command") {
       val placeCommand = Place(Position(1, 2), North)
-      val triedRobot = executeCommand(None, placeCommand)(table)
+      val triedRobot = executeCommand(None, placeCommand)
       triedRobot.isRight shouldBe true
       triedRobot.right.get shouldBe OnTableRobot(OnTable(Position(1, 2)), North)
     }
 
     it("should discard MOVE command if no robot") {
-      val triedRobot = executeCommand(None, Move)(table)
+      val triedRobot = executeCommand(None, Move)
       triedRobot.isLeft shouldBe true
       triedRobot.left.get shouldBe "Command discarded, must first place the robot"
     }
 
     it("should execute MOVE command") {
       val robot = OnTableRobot(OnTable(Position(1, 2)), North)
-      val triedRobot = executeCommand(Some(robot), Move)(table)
+      val triedRobot = executeCommand(Some(robot), Move)
       triedRobot.isRight shouldBe true
       triedRobot.right.get shouldBe OnTableRobot(OnTable(Position(1, 3)), North)
     }
 
     it("should discard LEFT command if no robot") {
-      val triedRobot = executeCommand(None, Left)(table)
+      val triedRobot = executeCommand(None, Left)
       triedRobot.isLeft shouldBe true
       triedRobot.left.get shouldBe "Command discarded, must first place the robot"
     }
 
     it("should execute LEFT command") {
       val robot = OnTableRobot(OnTable(Position(1, 2)), North)
-      val triedRobot = executeCommand(Some(robot), Left)(table)
+      val triedRobot = executeCommand(Some(robot), Left)
       triedRobot.isRight shouldBe true
       triedRobot.right.get shouldBe OnTableRobot(OnTable(Position(1, 2)), West)
     }
 
     it("should discard RIGHT command if no robot") {
-      val triedRobot = executeCommand(None, Right)(table)
+      val triedRobot = executeCommand(None, Right)
       triedRobot.isLeft shouldBe true
       triedRobot.left.get shouldBe "Command discarded, must first place the robot"
     }
 
     it("should execute RIGHT command") {
       val robot = OnTableRobot(OnTable(Position(1, 2)), North)
-      val triedRobot = executeCommand(Some(robot), Right)(table)
+      val triedRobot = executeCommand(Some(robot), Right)
       triedRobot.isRight shouldBe true
       triedRobot.right.get shouldBe OnTableRobot(OnTable(Position(1, 2)), East)
     }
 
     it("should discard REPORT command if no robot") {
-      val triedRobot = executeCommand(None, Report)(table)
+      val triedRobot = executeCommand(None, Report)
       triedRobot.isLeft shouldBe true
       triedRobot.left.get shouldBe "Command discarded, must first place the robot"
     }
 
     it("should execute REPORT command") {
       val robot = OnTableRobot(OnTable(Position(1, 2)), North)
-      val triedRobot = executeCommand(Some(robot), Report)(table)
+      val triedRobot = executeCommand(Some(robot), Report)
       triedRobot.isLeft shouldBe true
       triedRobot.left.get shouldBe "1,2,NORTH"
+    }
+  }
+
+  describe("execute command line") {
+    it("should parse and execute command") {
+      val stringOrRobot = executeCommandLine("PLACE 1,2,WEST", None)
+      stringOrRobot.isRight shouldBe true
+      stringOrRobot.right.get shouldBe OnTableRobot(OnTable(Position(1, 2)), West)
     }
   }
 

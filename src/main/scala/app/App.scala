@@ -16,12 +16,9 @@ object App {
     var history: List[Option[Robot]] = List[Option[Robot]](None)
     while(true) {
       val commandString = StdIn.readLine()
-      val robot: Either[String, Robot] = for {
-        c <- parseCommand(commandString)
-        r <- executeCommand(history.head, c)
-      } yield r
+      val messageOrRobot: Either[String, Robot] = executeCommandLine(commandString, history.head)
 
-      robot match {
+      messageOrRobot match {
         case scala.util.Right(r) => history = Some(r) :: history
         case scala.util.Left(m) => println(m)
       }

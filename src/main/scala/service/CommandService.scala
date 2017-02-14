@@ -10,4 +10,11 @@ trait CommandService[Command, Direction, Position, Table, Robot] {
 
   def executeCommand(maybeRobot: Option[Robot], command: Command)(implicit table: Table): Either[String, Robot]
 
+  def executeCommandLine(commandLine: String, maybeRobot: Option[Robot])(implicit table: Table): Either[String, Robot] = {
+    for {
+      c <- parseCommand(commandLine)
+      r <- executeCommand(maybeRobot, c)
+    } yield r
+  }
+
 }
