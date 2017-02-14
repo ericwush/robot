@@ -1,7 +1,7 @@
 # Toy Robot Simulator
 
 ### Problem description
-[PROBLEM](robot/blob/master/PROBLEM.md)
+[PROBLEM](PROBLEM.md)
 
 ### How to build
 In project directory: 
