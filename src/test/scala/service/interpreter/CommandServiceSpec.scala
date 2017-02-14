@@ -8,9 +8,7 @@ import scala.collection.immutable.Range.Inclusive
 
 class CommandServiceSpec extends FunSpec with Matchers {
 
-  val tableX: Inclusive = 0 to 4
-  val tableY: Inclusive = 0 to 4
-  implicit val table = model.Table(tableX, tableY)
+  implicit val table = model.Table(0 to 4)
 
   describe("parse direction") {
     it("should return East") {

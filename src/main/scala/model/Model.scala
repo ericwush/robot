@@ -15,7 +15,7 @@ case object Left extends Command
 case object Right extends Command
 case object Report extends Command
 
-case class Table(x: Range, y: Range)
+case class Table(dimensions: Range)
 
 sealed trait TablePosition
 case class OnTable(position: Position) extends TablePosition

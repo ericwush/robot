@@ -10,11 +10,9 @@ class TableServiceSpec extends FunSpec with Matchers with PropertyChecks {
 
   describe("position") {
     it("should return OnTable when position is on table") {
-      val tableX = -1 to 3
-      val tableY = 0 to 4
-      val onTableX = Gen.choose(-1, 3)
+      val onTableX = Gen.choose(0, 4)
       val onTableY = Gen.choose(0, 4)
-      val table = model.Table(tableX, tableY)
+      val table = model.Table(0 to 4)
 
       forAll(onTableX, onTableY) { (x: Int, y: Int) =>
         position(table, Position(x, y)) shouldBe OnTable(Position(x, y))
@@ -22,11 +20,9 @@ class TableServiceSpec extends FunSpec with Matchers with PropertyChecks {
     }
 
     it("should return OffTable when position is off table") {
-      val tableX = 0 to 3
-      val tableY = 0 to 4
       val offTableX = Gen.choose(4, 9)
       val offTableY = Gen.choose(5, 10)
-      val table = model.Table(tableX, tableY)
+      val table = model.Table(0 to 4)
 
       forAll(offTableX, offTableY) { (x: Int, y: Int) =>
         position(table, Position(x, y)) shouldBe OffTable

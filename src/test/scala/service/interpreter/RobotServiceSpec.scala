@@ -8,9 +8,7 @@ import scala.collection.immutable.Range.Inclusive
 
 class RobotServiceSpec extends FunSpec with Matchers {
 
-  val tableX: Inclusive = 0 to 4
-  val tableY: Inclusive = 0 to 4
-  val table = model.Table(tableX, tableY)
+  val table = model.Table(0 to 4)
 
   describe("place") {
     it("return OffTableRobot when position is off table") {

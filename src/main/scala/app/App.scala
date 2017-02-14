@@ -8,9 +8,7 @@ import scala.io.StdIn
 object App {
 
   def main(args: Array[String]): Unit = {
-    val tableX = 0 to 4
-    val tableY = 0 to 4
-    implicit val table = Table(tableX, tableY)
+    implicit val table = Table(0 to 4)
 
     // Wanted to use State Monad but didn't fully get it
     var history: List[Option[Robot]] = List[Option[Robot]](None)
