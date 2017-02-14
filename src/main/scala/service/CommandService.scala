@@ -8,6 +8,6 @@ trait CommandService[Command, Direction, Position, Table, Robot] {
 
   def parseCommand(commandLine: String): Either[String, Command]
 
-  def executeCommand(maybeRobot: Option[Robot], command: Command): Table => Either[String, Robot]
+  def executeCommand(maybeRobot: Option[Robot], command: Command)(implicit table: Table): Either[String, Robot]
 
 }

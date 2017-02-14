@@ -10,7 +10,7 @@ object App {
   def main(args: Array[String]): Unit = {
     val tableX = 0 to 4
     val tableY = 0 to 4
-    val table = Table(tableX, tableY)
+    implicit val table = Table(tableX, tableY)
 
     // Wanted to use State Monad but didn't fully get it
     var history: List[Option[Robot]] = List[Option[Robot]](None)
@@ -18,7 +18,7 @@ object App {
       val commandString = StdIn.readLine()
       val robot: Either[String, Robot] = for {
         c <- parseCommand(commandString)
-        r <- executeCommand(history.head, c)(table)
+        r <- executeCommand(history.head, c)
       } yield r
 
       robot match {

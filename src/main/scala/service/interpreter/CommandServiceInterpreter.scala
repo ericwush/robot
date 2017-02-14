@@ -1,7 +1,7 @@
 package service
 package interpreter
 
-import model._
+import model.{Table, _}
 import service.interpreter.RobotService._
 
 import scala.util.Try
@@ -60,8 +60,8 @@ class CommandServiceInterpreter extends CommandService[Command, Direction, Posit
     }
   }
 
-  def executeCommand(maybeRobot: Option[Robot], command: Command): Table => Either[String, Robot] = {
-    table => {
+  def executeCommand(maybeRobot: Option[Robot], command: Command)(implicit table: Table): Either[String, Robot] = {
+
       command match {
         case Place(position, direction) => scala.util.Right(place(table, position, direction))
         case Move => action(maybeRobot, move(table))
@@ -69,7 +69,6 @@ class CommandServiceInterpreter extends CommandService[Command, Direction, Posit
         case Right => action(maybeRobot, right)
         case Report => reportRobot(maybeRobot)
       }
-    }
   }
 
   private def action(maybeRobot: Option[Robot], action: Robot => Robot): Either[String, Robot] = {
